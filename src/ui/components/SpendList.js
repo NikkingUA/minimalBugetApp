@@ -1,46 +1,31 @@
-import React from 'react';
+import moment from 'moment';
+import React, { useEffect } from 'react';
 
 import { View, Text, FlatList, StyleSheet, ScrollView } from 'react-native';
 
 import { colors } from '../../theme/color/color';
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-        color: 'red'
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-        color: 'green'
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-        color: 'green'
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-        color: 'green'
-    }
-];
-
-const Item = ({ title }) => (
-    <View style={styled.itemList}>
-        <Text >{title}</Text>
+const Item = ({ data }) => (
+    <View style={data.addIncome ? styled.itemListAdd : styled.itemListSpend}>
+        <View style={styled.description}>
+            <Text style={styled.titleOfItem}>{data.title}</Text>
+            <Text style={styled.category}>Categori: {data.category}</Text>
+            <Text style={styled.paymentMethod}>Payment method: {data.methodOfPayments}</Text>
+        </View>
+        <View style={styled.summary}>
+            <Text style={styled.date}>{data?.creationDate}</Text>
+            <Text style={data.addIncome ? styled.addMoney : styled.spendMoney}>
+                {data.addIncome ? '+' : '-'}
+                {data.spendMoney}
+                {data.valute}
+            </Text>
+        </View>
     </View>
 );
 
 const renderItem = ({ item }) => (
-    <Item title={item.title} />
+    <Item data={item} />
 );
-
 
 const SpendList = ({
     dataMoney
@@ -67,15 +52,58 @@ const styled = StyleSheet.create({
     scrollContainer: {
         height: 350
     },
-    itemList: {
+    description: {
+        justifyContent: 'space-between'
+    },
+    summary: {
+        alignItems: 'flex-end'
+    },
+    itemListAdd: {
         backgroundColor: colors.one.ligthGreen,
-        padding: 20,
+        padding: 13,
         marginVertical: 10,
-        borderRadius: 10
+        borderRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    itemListSpend: {
+        backgroundColor: colors.one.ligthRose,
+        padding: 13,
+        marginVertical: 10,
+        borderRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    spendMoney: {
+        fontSize: 20,
+        color: 'red',
+        paddingTop: 10
+    },
+    titleOfItem: {
+        fontWeight: 'bold',
+        fontSize: 17
+    },
+    addMoney: {
+        fontSize: 20,
+        color: 'green',
+        paddingTop: 10
+    },
+    date: {
+        fontSize: 10,
+        color: 'gray'
     },
     emptyListMessage: {
         textAlign: 'center',
         marginVertical: 30
+    },
+    category: {
+        fontSize: 10,
+        color: 'gray'
+    },
+    paymentMethod: {
+        fontSize: 10,
+        color: 'gray',
+        marginTop: 5
     }
 })
 

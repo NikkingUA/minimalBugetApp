@@ -26,6 +26,7 @@ const IconMenu = (props) => {
                     type={'remove-circle-outline'}
                     size={35}
                     color="red"
+                    onAction={() => navigation.navigate('AddExpense')}
                 />
             </View>
             <View style={styled.iconContainer}>

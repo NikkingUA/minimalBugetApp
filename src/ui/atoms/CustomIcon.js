@@ -11,7 +11,7 @@ const CustomIcon = (props) => {
     return (
         <View>
             <Icon
-                onPress={() => onAction()}
+                onPress={() => onAction && onAction()}
                 name={type}
                 size={size}
                 color={color}

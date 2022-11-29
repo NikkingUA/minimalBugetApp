@@ -6,18 +6,11 @@ import { colors } from '../theme/color/color';
 import { IconMenu, SpendList } from '../ui/components';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const Wallet = (props) => {
 
-    const [dataMoney, setDataMoney] = useState([
-        {
-            id: 1,
-            title: 'Coca-Cola',
-            category: 'Drink',
-            methodOfPayments: 'CreditCard',
-            description: 'Hello world'
-        }
-    ]);
+    const [dataMoney, setDataMoney] = useState([]);
 
 
     const getData = async () => {
@@ -25,24 +18,35 @@ const Wallet = (props) => {
             const jsonValue = await AsyncStorage.getItem('@moneyData');
             return jsonValue != null ? setDataMoney(JSON.parse(jsonValue)) : null;
         } catch (e) {
-            // error reading value
+            console.log('Get data wallet error: ', e);
         }
     };
 
+    const setWalletData = async () => {
+        try {
+            await AsyncStorage.setItem('@moneyData', JSON.stringify([]));
+        } catch (e) {
+            console.log('Set new wallet error: ', e);
+        }
+    };
 
+    // const clearAll = async () => {
+    //     try {
+    //         await AsyncStorage.clear()
+    //     } catch (e) {
+    //         // clear error
+    //     }
+
+    //     console.log('Done.')
+    // }
 
 
     useEffect(() => {
-        getData();
-        // clearAll = async () => {
-        //     try {
-        //         await AsyncStorage.clear()
-        //     } catch (e) {
-        //         // clear error
-        //     }
-
-        //     console.log('Done.')
+        // clearAll();
+        // if (dataMoney.length < 0) {
+        // setWalletData();
         // }
+        getData();
     }, []);
 
     return (
@@ -65,6 +69,7 @@ const Wallet = (props) => {
                 </View>
                 <SpendList dataMoney={dataMoney} />
             </View>
+            <Toast />
         </View>
     )
 }
