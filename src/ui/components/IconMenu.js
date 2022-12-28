@@ -16,7 +16,7 @@ const IconMenu = (props) => {
             <View style={styled.iconContainer}>
                 <CustomIcon
                     type={'add-circle-outline'}
-                    size={35}
+                    size={30}
                     color="green"
                     onAction={() => navigation.navigate('AddIncome')}
                 />
@@ -24,7 +24,7 @@ const IconMenu = (props) => {
             <View style={styled.iconContainer}>
                 <CustomIcon
                     type={'remove-circle-outline'}
-                    size={35}
+                    size={30}
                     color="red"
                     onAction={() => navigation.navigate('AddExpense')}
                 />
@@ -32,14 +32,14 @@ const IconMenu = (props) => {
             <View style={styled.iconContainer}>
                 <CustomIcon
                     type={'reload-outline'}
-                    size={35}
+                    size={30}
                     color="blue"
                 />
             </View>
             <View style={styled.iconContainer}>
                 <CustomIcon
                     type={'snow'}
-                    size={35}
+                    size={30}
                     color="white"
                 />
             </View>
@@ -49,13 +49,16 @@ const IconMenu = (props) => {
 
 const styled = StyleSheet.create({
     iconContainer: {
-        backgroundColor: colors.one.ligthGreen,
+        backgroundColor: colors.one.ligthTransparentIcon,
         padding: 10,
-        borderRadius: 10
+        borderRadius: 100
     },
     centralContainerIcon: {
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-between',
+        width: '100%',
+        backgroundColor: colors.one.ligthBlueTrasparent,
+        marginTop: 30
     },
 })
 

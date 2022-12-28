@@ -8,6 +8,7 @@ import { colors } from '../theme/color/color';
 import { useNavigation } from '@react-navigation/native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 import {
     CustomButton,
@@ -18,31 +19,49 @@ import {
 import { category, paymentMethod } from '../utils/const';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
+import moment from 'moment';
+
+
 
 const AddIncome = (props) => {
 
     const navigation = useNavigation();
 
     const [addIncome, setAddIncome] = useState({});
-    const [moneyList, setMoneyList] = useState(null);
+    const [moneyList, setMoneyList] = useState([]);
     const [enable, setEnable] = useState(false);
+
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('@moneyData');
+            console.log('async opretaion', jsonValue);
+            return jsonValue != null && setMoneyList(JSON.parse(jsonValue));
+        } catch (e) {
+            console.log('Get data wallet error: ', e);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     const handleClick = async () => {
         try {
-            const money = await AsyncStorage.getItem('@moneyData');
-            console.log('array');
-            const newDataMoney = JSON.parse(money).concat([{
+            const newDataMoney = {
                 id: Date.now(),
                 title: addIncome.title,
-                category: 'Drink',
+                category: addIncome.category,
                 methodOfPayments: addIncome.paymentMethod,
                 description: addIncome.description,
-                creationDate: moment().format('MMMM Do YYYY, h:mm'),
+                creationDate: moment().format('MMMM Do YYYY, hh:mm'),
                 spendMoney: addIncome.money,
                 addIncome: true,
                 valute: '$'
-            }]);
-            await AsyncStorage.setItem('@moneyData', JSON.stringify(newDataMoney));
+            };
+            const updatedMoneyData = [...moneyList, newDataMoney];
+
+            await AsyncStorage.setItem('@moneyData', JSON.stringify(updatedMoneyData));
+
             Toast.show({
                 type: 'success',
                 text1: 'Add income',
@@ -51,7 +70,7 @@ const AddIncome = (props) => {
                 topOffset: 10
             });
         } catch (error) {
-            console.log('Error -> addIncome');
+            console.log('Error -> addIncome', error);
             Toast.show({
                 type: 'error',
                 text1: 'Add income',
@@ -134,7 +153,7 @@ const AddIncome = (props) => {
                         onSelect={(selectedItem, index) => {
                             setAddIncome({
                                 ...addIncome,
-                                paymentMethod: selectedItem
+                                category: selectedItem
                             })
                         }}
                         buttonTextAfterSelection={(selectedItem, index) => {

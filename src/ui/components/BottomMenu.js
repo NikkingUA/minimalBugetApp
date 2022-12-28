@@ -12,6 +12,12 @@ import CustomIcon from '../atoms/CustomIcon';
 const BottomMenu = (props) => {
 
     const navigation = useNavigation();
+    const [active, setActive] = useState({
+        iconWallet: true,
+        iconNote: false,
+        iconStatistics: false,
+        iconAccount: false
+    });
 
     return (
         <View style={styled.menuContainer}>
@@ -19,49 +25,87 @@ const BottomMenu = (props) => {
                 <View style={styled.buttonMenu}>
                     <TouchableOpacity
                         title="Wallet"
+                        style={active.iconWallet && styled.activeIcon}
                     >
-                        {/* <Text>Wallet</Text> */}
                         <CustomIcon
                             type="wallet"
-                            size={35}
-                            color={'black'}
-                            onAction={() => navigation.navigate('Wallet')}
+                            size={23}
+                            color={'white'}
+                            onAction={() => {
+                                navigation.navigate('Wallet')
+                                setActive({
+                                    iconWallet: true,
+                                    iconNote: false,
+                                    iconStatistics: false,
+                                    iconAccount: false
+                                });
+                            }
+                            }
                         />
                     </TouchableOpacity>
                 </View>
                 <View style={styled.buttonMenu}>
                     <TouchableOpacity
                         title="Note"
+                        style={active.iconNote && styled.activeIcon}
                     >
                         <CustomIcon
                             type="bookmark"
-                            size={35}
-                            color={'black'}
-                            onAction={() => navigation.navigate('SavingsMoney')}
+                            size={23}
+                            color={'white'}
+                            onAction={() => {
+                                navigation.navigate('SavingsMoney');
+                                setActive({
+                                    iconWallet: false,
+                                    iconNote: true,
+                                    iconStatistics: false,
+                                    iconAccount: false
+                                });
+                            }}
                         />
                     </TouchableOpacity>
                 </View>
                 <View style={styled.buttonMenu}>
                     <TouchableOpacity
                         title="Statistic"
+                        style={active.iconStatistics && styled.activeIcon}
                     >
                         <CustomIcon
                             type="bar-chart"
-                            size={35}
-                            color={'black'}
-                            onAction={() => navigation.navigate('Statistic')}
+                            size={23}
+                            color={'white'}
+                            onAction={() => {
+                                navigation.navigate('Statistic');
+                                setActive({
+                                    iconWallet: false,
+                                    iconNote: false,
+                                    iconStatistics: true,
+                                    iconAccount: false
+                                });
+                            }
+                            }
                         />
                     </TouchableOpacity>
                 </View>
                 <View style={styled.buttonMenu}>
                     <TouchableOpacity
                         title="Profile"
+                        style={active.iconAccount && styled.activeIcon}
                     >
                         <CustomIcon
                             type="person-sharp"
-                            size={35}
-                            color={'black'}
-                            onAction={() => navigation.navigate('Profile')}
+                            size={23}
+                            color={'white'}
+                            onAction={() => {
+                                navigation.navigate('Profile');
+                                setActive({
+                                    iconWallet: false,
+                                    iconNote: false,
+                                    iconStatistics: false,
+                                    iconAccount: true
+                                });
+                            }
+                            }
                         />
                     </TouchableOpacity>
                 </View>
@@ -72,10 +116,10 @@ const BottomMenu = (props) => {
 
 const styled = StyleSheet.create({
     menu: {
-        backgroundColor: colors.one.ligthBlueOne,
-        margin: 15,
+        backgroundColor: colors.one.ligthBlue,
+        margin: 20,
         height: 70,
-        borderRadius: 17,
+        borderRadius: 25,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center'
@@ -85,6 +129,14 @@ const styled = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    activeIcon: {
+        backgroundColor: colors.one.ligthTransparentIcon,
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 50,
+        height: 50
     }
 })
 

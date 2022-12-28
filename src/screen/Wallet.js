@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Dimensions } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 import { colors } from '../theme/color/color';
 
 import { IconMenu, SpendList } from '../ui/components';
 
+import moment from 'moment';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 
-const Wallet = (props) => {
+const Wallet = ({ data, onUpdateData }) => {
 
     const [dataMoney, setDataMoney] = useState([]);
-
 
     const getData = async () => {
         try {
@@ -22,30 +23,9 @@ const Wallet = (props) => {
         }
     };
 
-    const setWalletData = async () => {
-        try {
-            await AsyncStorage.setItem('@moneyData', JSON.stringify([]));
-        } catch (e) {
-            console.log('Set new wallet error: ', e);
-        }
-    };
-
-    // const clearAll = async () => {
-    //     try {
-    //         await AsyncStorage.clear()
-    //     } catch (e) {
-    //         // clear error
-    //     }
-
-    //     console.log('Done.')
-    // }
-
+    console.log('Data from stack', data);
 
     useEffect(() => {
-        // clearAll();
-        // if (dataMoney.length < 0) {
-        // setWalletData();
-        // }
         getData();
     }, []);
 
@@ -53,7 +33,7 @@ const Wallet = (props) => {
         <View style={styled.principalContainer}>
             <View style={styled.saldoContainer}>
                 <View>
-                    <Text style={styled.dataText}>Today: 04/08/2022</Text>
+                    <Text style={styled.dataText}>Today: {moment().format('MMMM Do YYYY, hh:mm')}</Text>
                 </View>
                 <View>
                     <Text>
@@ -61,8 +41,8 @@ const Wallet = (props) => {
                         <Text style={styled.numberMoney}>1800$</Text>
                     </Text>
                 </View>
+                <IconMenu />
             </View>
-            <IconMenu />
             <View style={styled.itemContainer}>
                 <View>
                     <Text style={styled.titleText}>Spese</Text>
@@ -75,37 +55,45 @@ const Wallet = (props) => {
 }
 
 const styled = StyleSheet.create({
+    principalContainer: {
+        flex: 1
+    },
     saldoText: {
         fontWeight: '500',
-        fontSize: 20
+        fontSize: 25,
+        color: 'white'
     },
     titleText: {
         fontWeight: 'bold',
         fontSize: 20
     },
     dataText: {
-        color: 'gray',
+        color: colors.one.ligthWhiteText,
         fontSize: 10,
-        marginBottom: 15
+        marginBottom: 15,
+        fontWeight: 'bold'
     },
     saldoContainer: {
-        backgroundColor: colors.one.ligthGreen,
-        margin: 20,
+        backgroundColor: colors.one.ligthBlue,
+        marginTop: 40,
+        marginHorizontal: 20,
         borderRadius: 11,
+        marginBottom: 20,
         paddingHorizontal: 25,
-        paddingVertical: 20
+        paddingVertical: 20,
+        flex: 1
     },
     numberMoney: {
         color: 'green',
         fontWeight: 'bold',
-        fontSize: 20
+        fontSize: 23
     },
     itemContainer: {
-        backgroundColor: colors.one.ligthGreen,
+        backgroundColor: colors.one.ligthBlueTrasparent,
         borderRadius: 10,
-        margin: 20,
+        marginHorizontal: 20,
         padding: 10,
-        height: 390
+        flex: 3
     }
 })
 

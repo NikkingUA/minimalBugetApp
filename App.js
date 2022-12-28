@@ -11,7 +11,11 @@ import {
   AddIncome,
   AddExpense
 } from './src/screen';
+
 import BottomMenu from './src/ui/components/BottomMenu';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,13 +29,24 @@ const MyTheme = {
 
 export default function App() {
 
+  const [moneyList, setMoneyList] = useState([]);
+
+  const handleUpdateList = async () => {
+    const jsonValue = await AsyncStorage.getItem('@moneyData');
+    return jsonValue != null && setMoneyList(JSON.parse(jsonValue));
+  }
+
 
   return (
-    <NavigationContainer theme={MyTheme}>
+    <NavigationContainer
+      theme={MyTheme}
+    >
       <Stack.Navigator
         initialRouterName="Wallet"
+        // moneyList={moneyList}
+        // onUpdateData={() => handleUpdateList}
         screenOptions={{
-          // headerShown: false,
+          headerShown: false,
           headerTitleAlign: 'center',
           headerBackVisible: false,
           headerStyle: styled.header,
@@ -69,6 +84,7 @@ export default function App() {
 
 const styled = StyleSheet.create({
   header: {
-    height: 20
+    // height: 20,
+    margin: 100
   }
 }); 
