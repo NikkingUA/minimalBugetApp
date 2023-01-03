@@ -11,7 +11,7 @@ const CustomButton = ({ label, action, enable }) => {
     return (
         <TouchableOpacity
             style={enable ? styled.buttonContainer : [styled.buttonContainer, styled.disableButton]}
-            onPress={enable && action}
+            onPress={enable ? action : null}
         >
             <Text style={styled.buttonLabel}>{label}</Text>
         </TouchableOpacity>
@@ -24,10 +24,10 @@ export default CustomButton;
 
 const styled = StyleSheet.create({
     buttonContainer: {
-        backgroundColor: 'green',
+        backgroundColor: colors.one.ligthGreenButton,
         margin: 20,
         padding: 20,
-        borderRadius: 10
+        borderRadius: 25
     },
     buttonLabel: {
         fontSize: 20,

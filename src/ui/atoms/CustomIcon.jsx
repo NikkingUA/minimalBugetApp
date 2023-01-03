@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -21,3 +21,9 @@ const CustomIcon = (props) => {
 };
 
 export default CustomIcon;
+
+const styled = StyleSheet.create({
+    notificationPin: {
+        backgroundColor: 'red'
+    }
+})

@@ -16,31 +16,17 @@ const IconMenu = (props) => {
             <View style={styled.iconContainer}>
                 <CustomIcon
                     type={'add-circle-outline'}
-                    size={30}
-                    color="green"
+                    size={35}
+                    color="rgba(14, 181, 45, 1)"
                     onAction={() => navigation.navigate('AddIncome')}
                 />
             </View>
             <View style={styled.iconContainer}>
                 <CustomIcon
                     type={'remove-circle-outline'}
-                    size={30}
-                    color="red"
+                    size={35}
+                    color="rgba(207, 74, 74, 1)"
                     onAction={() => navigation.navigate('AddExpense')}
-                />
-            </View>
-            <View style={styled.iconContainer}>
-                <CustomIcon
-                    type={'reload-outline'}
-                    size={30}
-                    color="blue"
-                />
-            </View>
-            <View style={styled.iconContainer}>
-                <CustomIcon
-                    type={'snow'}
-                    size={30}
-                    color="white"
                 />
             </View>
         </View>
@@ -49,16 +35,19 @@ const IconMenu = (props) => {
 
 const styled = StyleSheet.create({
     iconContainer: {
-        backgroundColor: colors.one.ligthTransparentIcon,
+        // backgroundColor: colors.one.ligthTransparentIcon,
+        backgroundColor: 'white',
         padding: 10,
-        borderRadius: 100
+        justifyContent: 'center',
+        borderRadius: 100,
+        marginRight: 20
     },
     centralContainerIcon: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         width: '100%',
         backgroundColor: colors.one.ligthBlueTrasparent,
-        marginTop: 30
+        marginTop: 20
     },
 })
 

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Gesture } from 'react-native';
 
 import { colors } from '../theme/color/color';
-
-import { IconMenu, SpendList } from '../ui/components';
-
-import moment from 'moment';
+import {
+    IconMenu,
+    SpendList
+} from '../ui/components';
+import { calcTotal } from '../utils/calcTotal';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import moment from 'moment';
 
-const Wallet = ({ data, onUpdateData }) => {
+
+const Wallet = (props) => {
 
     const [dataMoney, setDataMoney] = useState([]);
 
@@ -23,30 +26,28 @@ const Wallet = ({ data, onUpdateData }) => {
         }
     };
 
-    console.log('Data from stack', data);
-
     useEffect(() => {
         getData();
     }, []);
 
     return (
         <View style={styled.principalContainer}>
-            <View style={styled.saldoContainer}>
+        <View style={styled.saldoContainer}>
                 <View>
                     <Text style={styled.dataText}>Today: {moment().format('MMMM Do YYYY, hh:mm')}</Text>
                 </View>
                 <View>
                     <Text>
-                        <Text style={styled.saldoText}>Saldo: </Text>
-                        <Text style={styled.numberMoney}>1800$</Text>
+                        <Text style={styled.saldoText}>Balance: </Text>
+                        <Text style={ calcTotal(dataMoney) > 0 ? styled.numberMoney : styled.numberMoneyLessThan}>{`${calcTotal(dataMoney)}$`}</Text>
                     </Text>
                 </View>
                 <IconMenu />
             </View>
             <View style={styled.itemContainer}>
-                <View>
+                {/* <View>
                     <Text style={styled.titleText}>Spese</Text>
-                </View>
+                </View> */}
                 <SpendList dataMoney={dataMoney} />
             </View>
             <Toast />
@@ -75,23 +76,36 @@ const styled = StyleSheet.create({
     },
     saldoContainer: {
         backgroundColor: colors.one.ligthBlue,
-        marginTop: 40,
-        marginHorizontal: 20,
-        borderRadius: 11,
+        marginHorizontal: 13,
+        borderRadius: 25,
         marginBottom: 20,
         paddingHorizontal: 25,
         paddingVertical: 20,
-        flex: 1
+        flex: 1,
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
+        elevation: 10,
+        zIndex: 99
     },
     numberMoney: {
-        color: 'green',
+        color: colors.one.ligthGreeMoney,
+        fontWeight: 'bold',
+        fontSize: 23
+    },
+    numberMoneyLessThan: {
+        color: colors.one.ligthRose,
         fontWeight: 'bold',
         fontSize: 23
     },
     itemContainer: {
         backgroundColor: colors.one.ligthBlueTrasparent,
-        borderRadius: 10,
-        marginHorizontal: 20,
+        borderRadius: 20,
+        marginHorizontal: 13,
         padding: 10,
         flex: 3
     }

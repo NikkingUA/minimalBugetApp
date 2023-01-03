@@ -28,7 +28,7 @@ const BottomMenu = (props) => {
                         style={active.iconWallet && styled.activeIcon}
                     >
                         <CustomIcon
-                            type="wallet"
+                            type="wallet-outline"
                             size={23}
                             color={'white'}
                             onAction={() => {
@@ -50,7 +50,7 @@ const BottomMenu = (props) => {
                         style={active.iconNote && styled.activeIcon}
                     >
                         <CustomIcon
-                            type="bookmark"
+                            type="cash-outline"
                             size={23}
                             color={'white'}
                             onAction={() => {
@@ -71,7 +71,7 @@ const BottomMenu = (props) => {
                         style={active.iconStatistics && styled.activeIcon}
                     >
                         <CustomIcon
-                            type="bar-chart"
+                            type="bar-chart-outline"
                             size={23}
                             color={'white'}
                             onAction={() => {
@@ -93,7 +93,7 @@ const BottomMenu = (props) => {
                         style={active.iconAccount && styled.activeIcon}
                     >
                         <CustomIcon
-                            type="person-sharp"
+                            type="person-outline"
                             size={23}
                             color={'white'}
                             onAction={() => {
@@ -115,6 +115,9 @@ const BottomMenu = (props) => {
 };
 
 const styled = StyleSheet.create({
+    menuContainer: {
+        backgroundColor: 'transparent'
+    },
     menu: {
         backgroundColor: colors.one.ligthBlue,
         margin: 20,

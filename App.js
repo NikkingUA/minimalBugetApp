@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Keyboard } from 'react-native';
 
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -13,9 +14,7 @@ import {
 } from './src/screen';
 
 import BottomMenu from './src/ui/components/BottomMenu';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
+import { NotificationMenu } from './src/ui/components';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,22 +28,29 @@ const MyTheme = {
 
 export default function App() {
 
-  const [moneyList, setMoneyList] = useState([]);
+  const [keyboardVisible, setKeyboardVisible] = useState(true);
 
-  const handleUpdateList = async () => {
-    const jsonValue = await AsyncStorage.getItem('@moneyData');
-    return jsonValue != null && setMoneyList(JSON.parse(jsonValue));
-  }
+  const keyboardDidShowListener = Keyboard.addListener(
+    'keyboardDidShow',
+    () => {
+      setKeyboardVisible(false); // or some other action
+    }
+  );
+  const keyboardDidHideListener = Keyboard.addListener(
+    'keyboardDidHide',
+    () => {
+      setKeyboardVisible(true); // or some other action
+    }
+  );
 
 
   return (
     <NavigationContainer
       theme={MyTheme}
     >
+      <NotificationMenu />
       <Stack.Navigator
         initialRouterName="Wallet"
-        // moneyList={moneyList}
-        // onUpdateData={() => handleUpdateList}
         screenOptions={{
           headerShown: false,
           headerTitleAlign: 'center',
@@ -77,7 +83,7 @@ export default function App() {
           component={AddExpense}
         />
       </Stack.Navigator>
-      <BottomMenu />
+      {keyboardVisible && <BottomMenu />}
     </NavigationContainer>
   );
 }

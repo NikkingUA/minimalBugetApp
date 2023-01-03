@@ -1,13 +1,11 @@
 import React from 'react';
 
-import { View, TextInput, StyleSheet, Text } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Keyboard } from 'react-native';
 
 import { colors } from '../../theme/color/color';
 
 
-const CustomInput = (props) => {
-
-    const { placeholder, type, onChange, error } = props;
+const CustomInput = ({ placeholder, type, onChange, error, maxLength }) => {
 
     return (
         <View>
@@ -16,6 +14,7 @@ const CustomInput = (props) => {
                 placeholder={placeholder}
                 keyboardType={type}
                 onChangeText={(value) => onChange(value)}
+                maxLength={maxLength}
             />
         </View>
     );
@@ -26,12 +25,12 @@ const styled = StyleSheet.create({
 
     },
     input: {
-        backgroundColor: colors.one.ligthGreen,
+        backgroundColor: colors.one.ligthBlueInput,
         height: 60,
         marginHorizontal: 20,
         marginVertical: 10,
         padding: 10,
-        borderRadius: 10
+        borderRadius: 20
     }
 })
 

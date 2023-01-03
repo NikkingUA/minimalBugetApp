@@ -25,11 +25,11 @@ const styled = StyleSheet.create({
 
     },
     textArea: {
-        backgroundColor: colors.one.ligthGreen,
+        backgroundColor: colors.one.ligthBlueInput,
         marginHorizontal: 20,
         marginVertical: 10,
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 20,
         textAlignVertical: 'top'
     }
 })

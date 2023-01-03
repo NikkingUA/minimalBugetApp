@@ -6,8 +6,6 @@ import AddIncome from './AddIncome';
 import AddExpense from './AddExpense';
 
 
-
-
 export {
     Wallet,
     Profile,

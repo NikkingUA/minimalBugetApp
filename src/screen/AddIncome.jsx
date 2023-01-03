@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Keyboard } from 'react-native';
 
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-
-import SelectDropdown from 'react-native-select-dropdown'
 import { colors } from '../theme/color/color';
-
-import { useNavigation } from '@react-navigation/native';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-
 import {
     CustomButton,
     CustomIcon,
@@ -17,10 +9,13 @@ import {
     CustomTextArea
 } from '../ui/atoms';
 import { category, paymentMethod } from '../utils/const';
+
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import SelectDropdown from 'react-native-select-dropdown';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-
 import moment from 'moment';
-
 
 
 const AddIncome = (props) => {
@@ -30,22 +25,35 @@ const AddIncome = (props) => {
     const [addIncome, setAddIncome] = useState({});
     const [moneyList, setMoneyList] = useState([]);
     const [enable, setEnable] = useState(false);
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
 
     const getData = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem('@moneyData');
-            console.log('async opretaion', jsonValue);
             return jsonValue != null && setMoneyList(JSON.parse(jsonValue));
         } catch (e) {
             console.log('Get data wallet error: ', e);
         }
     };
 
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
     useEffect(() => {
         getData();
     }, []);
 
-    const handleClick = async () => {
+    const handleAddIncome = async () => {
         try {
             const newDataMoney = {
                 id: Date.now(),
@@ -61,10 +69,9 @@ const AddIncome = (props) => {
             const updatedMoneyData = [...moneyList, newDataMoney];
 
             await AsyncStorage.setItem('@moneyData', JSON.stringify(updatedMoneyData));
-
             Toast.show({
                 type: 'success',
-                text1: 'Add income',
+                text1: 'Add Income',
                 text2: 'Income add with success',
                 position: 'top',
                 topOffset: 10
@@ -79,11 +86,10 @@ const AddIncome = (props) => {
                 topOffset: 10
             });
         }
-        navigation.navigate('Wallet');
+        navigation.replace('Wallet');
     }
 
     useEffect(() => {
-        // getMoneyList();
         if (addIncome.money && addIncome.description && addIncome.title && addIncome.paymentMethod) {
             if (addIncome.money !== '' || addIncome.description !== '' || addIncome.title !== '') {
                 setEnable(true)
@@ -94,7 +100,9 @@ const AddIncome = (props) => {
     }, [addIncome.money, addIncome.description, addIncome.label]);
 
     return (
-        <View style={styled.container}>
+        <KeyboardAwareScrollView style={styled.container}>
+            <View>
+                <Text style={styled.titleAdd}>Add Income</Text>
             <View>
                 <View>
                     <CustomInput
@@ -104,6 +112,7 @@ const AddIncome = (props) => {
                             ...addIncome,
                             money: value
                         })}
+                        maxLength={5}
                     />
                 </View>
                 <View style={styled.selectContainer}>
@@ -186,33 +195,41 @@ const AddIncome = (props) => {
                 </View>
             </View>
             <View>
-                <CustomButton
+                {!keyboardVisible ? (
+                    <CustomButton
                     label="ADD"
-                    action={() => handleClick()}
+                    action={() => handleAddIncome()}
                     enable={enable}
                 />
+                ) : (
+                    <CustomButton
+                    label="Close keyboard"
+                    action={() => keyboardDidHideListener}
+                    enable={true}
+                />
+                )}
             </View>
-        </View>
+            </View>
+        </KeyboardAwareScrollView>
     )
 }
 
 const styled = StyleSheet.create({
     container: {
-        margin: 5,
-        justifyContent: 'space-between'
+        // margin: 5,
+        // justifyContent: 'space-between'
     },
     input: {
-        backgroundColor: colors.one.ligthGreen,
+        backgroundColor: colors.one.ligthBlueInput,
         height: 60,
         width: '80%',
         marginHorizontal: 20,
         marginVertical: 10,
         padding: 10,
-        borderRadius: 10
+        borderRadius: 20
     },
     buttonTextDropDown: {
         fontSize: 14,
-        // marginRight: 260,
         textAling: 'left'
     },
     dropDown: {
@@ -224,7 +241,15 @@ const styled = StyleSheet.create({
     selectContainer: {
         flexDirection: 'row',
         width: '50%'
-        // paddingHorizontal: '3%'
+    },
+    titleAdd: {
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    absoluteText:{
+        color: 'white',
+        textAlign: 'center'
     }
 })
 export default AddIncome;
