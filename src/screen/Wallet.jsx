@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Gesture } from 'react-native';
+import { Text, View, StyleSheet, Gesture, ScrollView } from 'react-native';
 
 import { colors } from '../theme/color/color';
 import {
@@ -43,13 +43,10 @@ const Wallet = (props) => {
                     </Text>
                 </View>
                 <IconMenu />
-            </View>
-            <View style={styled.itemContainer}>
-                {/* <View>
-                    <Text style={styled.titleText}>Spese</Text>
-                </View> */}
+        </View>
+            <ScrollView style={styled.itemContainer}>
                 <SpendList dataMoney={dataMoney} />
-            </View>
+            </ScrollView>
             <Toast />
         </View>
     )
@@ -81,7 +78,7 @@ const styled = StyleSheet.create({
         marginBottom: 20,
         paddingHorizontal: 25,
         paddingVertical: 20,
-        flex: 1,
+        flex: 0.4,
         shadowColor: "black",
         shadowOffset: {
             width: 0,

@@ -12,5 +12,8 @@ export const colors = {
         ligthBlack: '#011627',
         ligthGreenButton: 'rgba(37, 143, 57, 1)',
         ligthBlueInput: 'rgba(32,164,243,0.30)',
+        ligthGreenStatistic: 'rgba(8,196,26,0.7)',
+        ligthRoseStatistic: 'rgba(255,0,26,0.7)',
+        lightGray: 'rgba(92, 85, 78, 0.20)'
     }
 }

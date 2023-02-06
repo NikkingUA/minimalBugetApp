@@ -6,12 +6,12 @@ import { CustomIcon } from '../atoms';
 const NotificationMenu = (props) => {
     return(
         <View style={styled.barContainer}>
-            <CustomIcon
+            {/* <CustomIcon
                 type="notifications-circle-outline"
                 color="black"
                 size={35}
                 onAction={() => Alert.alert('Notification')}
-            />
+            /> */}
         </View>
     );
 }
@@ -26,6 +26,6 @@ const styled = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end', 
         marginBottom: 5,
-        marginTop: 20
+        marginTop: 30
     }
 })

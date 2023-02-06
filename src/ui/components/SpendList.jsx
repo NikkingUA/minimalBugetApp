@@ -36,7 +36,7 @@ const SpendList = ({
 }) => {
     return (
         <View>
-            <ScrollView style={styled.scrollContainer}>
+            <View style={styled.scrollContainer}>
                 {dataMoney.length > 0 ? (
                     <FlatList
                         data={dataMoney}
@@ -47,7 +47,7 @@ const SpendList = ({
                     :
                     <Text style={styled.emptyListMessage}>Your list is empty...</Text>
                 }
-            </ScrollView>
+            </View>
         </View>
     );
 }

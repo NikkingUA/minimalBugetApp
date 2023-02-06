@@ -10,7 +10,9 @@ import {
   Statistic,
   Profile,
   AddIncome,
-  AddExpense
+  AddExpense,
+  AddSaveMoney,
+  InfoSavingsMoney
 } from './src/screen';
 
 import BottomMenu from './src/ui/components/BottomMenu';
@@ -81,6 +83,14 @@ export default function App() {
         <Stack.Screen
           name="AddExpense"
           component={AddExpense}
+        />
+        <Stack.Screen
+          name="AddSaveMoney"
+          component={AddSaveMoney}
+        />
+        <Stack.Screen
+          name="InfoSavingsMoney"
+          component={InfoSavingsMoney}
         />
       </Stack.Navigator>
       {keyboardVisible && <BottomMenu />}

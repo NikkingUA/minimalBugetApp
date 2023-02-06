@@ -5,16 +5,34 @@ export const paymentMethod = [
     "Gift Card"
 ];
 
-export const category = [
+export const categoryIncome = [
+    "Salary",
+    "Bonuse",
+    "Investment",
+    "Passive Income",
+    "Government Benefit",
+    "Rental",
+    "Gift"
+];
+export const categoryExpense = [
     "Drink",
     "Party",
-    "Superstore",
+    "Gas",
+    "Water",
+    "Internet",
+    "Electricity",
+    "Food",
+    "Haircuts",
+    "Clothing",
+    "Hobby",
+    "Supermarket",
     "Shopping",
     "Car",
     "Family",
     "Gift",
     "Bicycle"
 ];
+
 
 export const colorArray = [
     'rgb(29 ,131 ,255)',

@@ -8,7 +8,7 @@ import {
     CustomInput,
     CustomTextArea
 } from '../ui/atoms';
-import { category, paymentMethod } from '../utils/const';
+import { categoryIncome, paymentMethod } from '../utils/const';
 
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -64,6 +64,7 @@ const AddIncome = (props) => {
                 creationDate: moment().format('MMMM Do YYYY, hh:mm'),
                 spendMoney: addIncome.money,
                 addIncome: true,
+                savingMoney: false,
                 valute: '$'
             };
             const updatedMoneyData = [...moneyList, newDataMoney];
@@ -90,14 +91,14 @@ const AddIncome = (props) => {
     }
 
     useEffect(() => {
-        if (addIncome.money && addIncome.description && addIncome.title && addIncome.paymentMethod) {
-            if (addIncome.money !== '' || addIncome.description !== '' || addIncome.title !== '') {
+        if (addIncome.money && addIncome.title && addIncome.paymentMethod) {
+            if (addIncome.money !== '' || addIncome.title !== '') {
                 setEnable(true)
             }
         } else {
             setEnable(false)
         }
-    }, [addIncome.money, addIncome.description, addIncome.label]);
+    }, [addIncome.money, addIncome.title]);
 
     return (
         <KeyboardAwareScrollView style={styled.container}>
@@ -149,7 +150,7 @@ const AddIncome = (props) => {
                         rowTextStyle={styled.dropDown}
                         selectedRowStyle={styled.dropDown}
                         buttonTextStyle={styled.buttonTextDropDown}
-                        data={category}
+                        data={categoryIncome}
                         defaultButtonText={'Category'}
                         dropdownStyle={styled.dropDownContainer}
                         renderDropdownIcon={isOpened => {

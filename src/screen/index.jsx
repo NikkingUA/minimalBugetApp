@@ -4,6 +4,8 @@ import Statistic from './Statistic';
 import SavingsMoney from './SavingsMoney';
 import AddIncome from './AddIncome';
 import AddExpense from './AddExpense';
+import AddSaveMoney from './AddSaveMoney';
+import InfoSavingsMoney from './InfoSavingsMoney';
 
 
 export {
@@ -12,5 +14,7 @@ export {
     Statistic,
     SavingsMoney,
     AddIncome,
-    AddExpense
+    AddExpense,
+    AddSaveMoney,
+    InfoSavingsMoney
 }

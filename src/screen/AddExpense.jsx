@@ -15,7 +15,7 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 
-import { category, paymentMethod } from '../utils/const';
+import { categoryExpense, paymentMethod } from '../utils/const';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import SelectDropdown from 'react-native-select-dropdown'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -70,6 +70,7 @@ const AddExpense = (props) => {
                 creationDate: moment().format('MMMM Do YYYY, hh:mm'),
                 spendMoney: addExpense.money,
                 addIncome: false,
+                savingMoney: false,
                 valute: '$'
             };
             const updatedMoneyData = [...moneyList, newDataMoney];
@@ -97,15 +98,14 @@ const AddExpense = (props) => {
     }
 
     useEffect(() => {
-        // getMoneyList();
-        if (addExpense.money && addExpense.description && addExpense.title && addExpense.paymentMethod) {
-            if (addExpense.money !== '' || addExpense.description !== '' || addExpense.title !== '') {
+        if (addExpense.money && addExpense.title && addExpense.paymentMethod) {
+            if (addExpense.money !== '' || addExpense.title !== '') {
                 setEnable(true)
             }
         } else {
             setEnable(false)
         }
-    }, [addExpense.money, addExpense.description, addExpense.label]);
+    }, [addExpense.money, addExpense.title]);
 
     return (
         <KeyboardAwareScrollView style={styled.container}>
@@ -155,7 +155,7 @@ const AddExpense = (props) => {
                         rowTextStyle={styled.dropDown}
                         selectedRowStyle={styled.dropDown}
                         buttonTextStyle={styled.buttonTextDropDown}
-                        data={category}
+                        data={categoryExpense}
                         defaultButtonText={'Category'}
                         dropdownStyle={styled.dropDownContainer}
                         renderDropdownIcon={isOpened => {

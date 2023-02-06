@@ -2,31 +2,34 @@ import React, {useState} from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native'
 import { CustomIcon, CustomInput } from '../ui/atoms';
 
-// md-man, ios-rocket-sharp
+// ios-rocket-sharp
 
 const Profile = (props) => {
 
     const [name, setName] = useState('Mykyta Postoienko');
     return (
-        <View>
-            <View style={styled.iconContainer}>
-                <View style={styled.iconProfile}>
-                <CustomIcon
-                    type="ios-rocket-sharp"
-                    size={130}
-                    color="white"
-                />  
-                </View>
+        <View style={styled.iconContainer}>
+            <View >
+                {/* <View style={styled.iconProfile}>
+                    <CustomIcon
+                        type="ios-rocket-sharp"
+                        size={130}
+                        color="white"
+                    />  
+                </View> */}
                 <Text style={styled.titleName}>{name}</Text>
+                <View>
+                    <Text>Currency: $</Text>
+                </View>
             </View>
             <View>
                 <View>
-                    <CustomInput
+                    {/* <CustomInput
                         placeholder='Name...'
                         keyboardType='text'
                         onChange={(value) => setName(value)}
                         maxLength={20}
-                    /> 
+                    />  */}
                 </View>
             </View>
         </View>
