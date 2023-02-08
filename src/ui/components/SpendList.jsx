@@ -8,8 +8,24 @@ import {
     StyleSheet,
     ScrollView
 } from 'react-native';
+import { colors } from '../../theme/color/color';
 
-const Item = ({ data }) => (
+
+const Item = ({ data }) => {
+
+    const controlStyleOfListMoney = () => {
+        if(data?.savingMoney){
+            return styled.savingMoney;
+        }else if(!data?.savingMoney && data.addIncome){
+            return styled.savingMoney;
+        }else if(data.addIncome){
+            return styled.addMoney;
+        }else if(!data.addIncome) {
+            return styled.spendMoney;
+        }
+    };
+
+    return (
     <View style={data.addIncome ? styled.itemListAdd : styled.itemListSpend} key={data.id}>
         <View style={styled.description}>
             <Text style={styled.titleOfItem}>{data.title}</Text>
@@ -18,14 +34,15 @@ const Item = ({ data }) => (
         </View>
         <View style={styled.summary}>
             <Text style={styled.date}>{data?.creationDate}</Text>
-            <Text style={data.addIncome ? styled.addMoney : styled.spendMoney}>
-                {data.addIncome ? '+' : '-'}
+            <Text style={controlStyleOfListMoney()}>
+                {data.addIncome || !data.savingMoney ? '+' : !data.addIncome || data.savingMoney ? '-' : ''}
                 {data.spendMoney}
                 {data.valute}
             </Text>
         </View>
     </View>
 );
+}
 
 const renderItem = ({ item }) => (
     <Item data={item} />
@@ -62,7 +79,6 @@ const styled = StyleSheet.create({
         alignItems: 'flex-end'
     },
     itemListAdd: {
-        // backgroundColor: colors.one.ligthGreen,
         backgroundColor: 'white',
         padding: 13,
         marginVertical: 10,
@@ -71,7 +87,6 @@ const styled = StyleSheet.create({
         justifyContent: 'space-between'
     },
     itemListSpend: {
-        // backgroundColor: colors.one.ligthRose,
         backgroundColor: 'white',
         padding: 13,
         marginVertical: 10,
@@ -92,6 +107,12 @@ const styled = StyleSheet.create({
     addMoney: {
         fontSize: 20,
         color: 'green',
+        fontWeight: 'bold',
+        paddingTop: 10
+    },
+    savingMoney: {
+        fontSize: 20,
+        color: colors.one.ligthBlue,
         fontWeight: 'bold',
         paddingTop: 10
     },

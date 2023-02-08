@@ -10,13 +10,6 @@ const Profile = (props) => {
     return (
         <View style={styled.iconContainer}>
             <View >
-                {/* <View style={styled.iconProfile}>
-                    <CustomIcon
-                        type="ios-rocket-sharp"
-                        size={130}
-                        color="white"
-                    />  
-                </View> */}
                 <Text style={styled.titleName}>{name}</Text>
                 <View>
                     <Text>Currency: $</Text>

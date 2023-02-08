@@ -32,8 +32,6 @@ const SavingsMoney = (props) => {
         }
     };
 
-    console.log(dataMoney)
-
     function calculatePercentageOfMaxAmount(currentAmount, maxAmount) {
         return (currentAmount / maxAmount) * 100;
     };

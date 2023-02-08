@@ -11,21 +11,25 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const ModalAddMoneySaving = ({
-    visibleAdd, 
-    setVisibleAdd, 
+const ModalTakeMoneySaving = ({
+    visibleTake, 
+    setVisibleTake, 
     label, 
+    limit,
+    actualValue,
     moneyData, 
     savingMoney,
     id
 }) => {
 
     const [moneyValue, setMoneyValue] = useState('');
+    const [error, setError] = useState(null);
     const navigation = useNavigation();
 
     const addSavingMoney = async () => {
+        console.log(moneyValue > 0)
         try{
-             if(moneyValue > 0){
+             if(parseInt(moneyValue) > 0){
                 const newSavingMoney = {
                 id: Date.now(),
                 title: label,
@@ -34,14 +38,14 @@ const ModalAddMoneySaving = ({
                 description: '',
                 creationDate: moment().format('MMMM Do YYYY, hh:mm'),
                 spendMoney: moneyValue,
-                addIncome: false,
-                savingMoney: true,
+                addIncome: true,
+                savingMoney: false,
                 valute: '$'
                 };
 
                 const updateInfoSavingMoney = savingMoney?.map(item => {
                     if(item.id === id){
-                        return {...item, actualValue: parseInt(item.actualValue) + parseInt(moneyValue)}
+                        return {...item, actualValue: parseInt(item.actualValue) - parseInt(moneyValue)}
                     }
                     return item;
                 });
@@ -50,7 +54,6 @@ const ModalAddMoneySaving = ({
                 await AsyncStorage.setItem('@moneyData', JSON.stringify(updatedMoneyData));
                 await AsyncStorage.setItem('@savingDataMoney', JSON.stringify(updateInfoSavingMoney));
              }
-
         }catch(error){
             console.log(`Errro add avign money: ${error}`);
         }
@@ -61,18 +64,18 @@ const ModalAddMoneySaving = ({
                 <Modal
                     animationType="slide"
                     transparent={false}
-                    visible={visibleAdd}
-                    onRequestClose={() => setVisibleAdd(false)}
+                    visible={visibleTake}
+                    onRequestClose={() => setVisibleTake(false)}
                 >
                    <View style={{alignItems: 'flex-end', margin: 20}}>
                          <CustomIcon
                             type="close"
                             color="black"
                             size={40}
-                            onAction={() => setVisibleAdd(false)}
+                            onAction={() => setVisibleTake(false)}
                         />
                    </View>
-                    <Text style={styled.titleStyle}>Add money for {label}</Text>
+                    <Text style={styled.titleStyle}>Take money for {label}</Text>
                    <View style={{flex: 2}}>
                         <CustomInput
                             placeholder="Money for saving..."
@@ -90,7 +93,7 @@ const ModalAddMoneySaving = ({
                             backgroundColor={colors.one.ligthGreen}
                             onClick={() => {
                                 addSavingMoney();
-                                setVisibleAdd(false);
+                                setVisibleTake(false);
                                 navigation.replace('SavingsMoney');
                             }
                         }
@@ -115,4 +118,4 @@ const styled = StyleSheet.create({
 });
 
 
-export default ModalAddMoneySaving;
+export default ModalTakeMoneySaving;

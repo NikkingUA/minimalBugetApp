@@ -5,7 +5,14 @@ import { View, TextInput, StyleSheet, Text, Keyboard } from 'react-native';
 import { colors } from '../../theme/color/color';
 
 
-const CustomInput = ({ placeholder, type, onChange, error, maxLength }) => {
+const CustomInput = ({ 
+    placeholder, 
+    type, 
+    onChange, 
+    error, 
+    errorEnabled,
+    maxLength
+}) => {
 
     return (
         <View>
@@ -16,6 +23,7 @@ const CustomInput = ({ placeholder, type, onChange, error, maxLength }) => {
                 onChangeText={(value) => onChange(value)}
                 maxLength={maxLength}
             />
+            {errorEnabled && <Text style={styled.errorMessageStyle}>{errorMessage}</Text>}
         </View>
     );
 }
@@ -31,6 +39,10 @@ const styled = StyleSheet.create({
         marginVertical: 10,
         padding: 10,
         borderRadius: 20
+    },
+    errorMessageStyle:{
+        fontSize: 10,
+        color: colors.one.ligthRose
     }
 })
 

@@ -2,10 +2,18 @@ import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 
 
-const CustomButtonSaving = ({label, width, height, backgroundColor, onClick}) => {
+const CustomButtonSaving = ({
+    label,
+    width,
+    height, 
+    backgroundColor, 
+    disabled, 
+    onClick
+}) => {
     return (
         <TouchableOpacity
             onPress={onClick}
+            disabled={disabled}
             style={{
                 backgroundColor: backgroundColor,
                 width: width,

@@ -6,6 +6,7 @@ import { colors } from '../theme/color/color';
 
 import {CustomButtonSaving, CustomIcon} from '../ui/atoms';
 import { ModalAddMoneySaving } from '../ui/components';
+import ModalTakeMoneySaving from '../ui/components/ModalTakeMoneySaving';
 
 
 const InfoSavingsMoney = ({route}) => {
@@ -20,7 +21,8 @@ const InfoSavingsMoney = ({route}) => {
         percent
     } = route.params;
 
-    const [visible, setVisible] = useState(false);
+    const [visibleAdd, setVisibleAdd] = useState(false);
+    const [visibleTake, setVisibleTake] = useState(false);
 
 
     return (
@@ -55,16 +57,17 @@ const InfoSavingsMoney = ({route}) => {
                         width={150}
                         height={50}
                         backgroundColor={colors.one.ligthGreeMoney}
-                        onClick={() => setVisible(true)}
+                        onClick={() => setVisibleAdd(true)}
                     />
                 </View>
-                <View>
+                <View style={parseInt(actualValue) <= 0 && {opacity: 0.5}}>
                     <CustomButtonSaving
                         label="Take"
                         width={150}
                         height={50}
+                        disabled={parseInt(actualValue) <= 0 ? true : false}
                         backgroundColor={colors.one.ligthBlue}
-                        onClick={() => console.log('button')}
+                        onClick={() => setVisibleTake(true)}
                     />
                 </View>
                 <View style={styled.iconContainer}>
@@ -76,10 +79,24 @@ const InfoSavingsMoney = ({route}) => {
                 </View>
             </View>
                 <ModalAddMoneySaving
-                    visible={visible}
-                    setVisible={setVisible}
+                    visibleAdd={visibleAdd}
+                    setVisibleAdd={setVisibleAdd}
+                    actualValue={actualValue}
+                    limit={limit}
                     label={label}
                     moneyData={moneyData}
+                    savingMoney={savingMoney}
+                    id={id}
+                />
+                <ModalTakeMoneySaving
+                    visibleTake={visibleTake}
+                    setVisibleTake={setVisibleTake}
+                    actualValue={actualValue}
+                    limit={limit}
+                    label={label}
+                    moneyData={moneyData}
+                    savingMoney={savingMoney}
+                    id={id}
                 />
         </View>
     )
@@ -89,7 +106,7 @@ const styled = StyleSheet.create({
     moneyContainer: {
         borderRadius: 15,
         padding: 15,
-        margin: 15,
+        margin: 8,
         backgroundColor: colors.one.ligthBlue
     },
     statisticContainer:{
