@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const colorOfStatistic = (category) => {
     switch (category) {
         case 'Drink':
@@ -47,4 +49,16 @@ export const colorOfStatistic = (category) => {
         case 'Rental':
             return '#00b0ab';
     }
+};
+
+export const changeStyledForItemOfList = (item) => {
+
+};
+
+
+export const filterDates = (data, startDate, endDate) => {
+    return data?.filter((date) => {
+        const dateFormat = moment(date.creationDate, 'MMMM Do YYYY, HH:mm').format('YYYY-MM-DD');
+        return moment(dateFormat).isBetween(startDate, endDate, null, '[]');
+    });
 };

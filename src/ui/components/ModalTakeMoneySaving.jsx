@@ -26,7 +26,7 @@ const ModalTakeMoneySaving = ({
     const [error, setError] = useState(null);
     const navigation = useNavigation();
 
-    const addSavingMoney = async () => {
+    const takeSavingMoney = async () => {
         console.log(moneyValue > 0)
         try{
              if(parseInt(moneyValue) > 0){
@@ -39,7 +39,8 @@ const ModalTakeMoneySaving = ({
                 creationDate: moment().format('MMMM Do YYYY, hh:mm'),
                 spendMoney: moneyValue,
                 addIncome: true,
-                savingMoney: false,
+                savingMoney: true,
+                savingMoneyTitle: label,
                 valute: '$'
                 };
 
@@ -53,6 +54,8 @@ const ModalTakeMoneySaving = ({
 
                 await AsyncStorage.setItem('@moneyData', JSON.stringify(updatedMoneyData));
                 await AsyncStorage.setItem('@savingDataMoney', JSON.stringify(updateInfoSavingMoney));
+                
+                navigation.replace('SavingsMoney');
              }
         }catch(error){
             console.log(`Errro add avign money: ${error}`);
@@ -92,9 +95,8 @@ const ModalTakeMoneySaving = ({
                             disabled={!moneyValue.trim() ? true : false}
                             backgroundColor={colors.one.ligthGreen}
                             onClick={() => {
-                                addSavingMoney();
+                                takeSavingMoney();
                                 setVisibleTake(false);
-                                navigation.replace('SavingsMoney');
                             }
                         }
                         />

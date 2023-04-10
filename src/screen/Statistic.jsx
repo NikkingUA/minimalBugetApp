@@ -1,16 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import { colors } from '../theme/color/color';
 
-// import { PieChart } from "react-native-chart-kit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PieGraph from '../ui/components/PieGraph';
-import { colorOfStatistic } from '../utils/common';
+import { colorOfStatistic, filterDates } from '../utils/common';
+import DatePickerComponent from '../ui/atoms/DataPicker'; 
 
 const Statistic = (props) => {
 
     const [dataMoney, setDataMoney] = useState([]);
+    const [showDatePiker, setShowDatePiker]= useState(false);
+    const [selectedDate, setSelectedDate] = useState({});
+    const [resetFilters, setResetFilter] = useState(false);
+
+    const applyDateFilters = (startDate, endDate) => {
+        setDataMoney(filterDates(dataMoney, startDate, endDate));
+    };
 
     const getData = async () => {
         try {
@@ -38,7 +45,7 @@ const Statistic = (props) => {
     function incomeObject(arr) {
         return arr.filter((obj, index, arr) => 
             index === arr.findIndex(item => 
-                Object.keys(obj).every(key => obj.category === item.category && item.addIncome === true)
+                Object.keys(obj).every(key => obj.category === item.category && item.addIncome === true && item.savingMoney === false)
             )
         )
     };
@@ -46,7 +53,7 @@ const Statistic = (props) => {
     function expenseObject(arr) {
         return arr.filter((obj, index, arr) => 
             index === arr.findIndex(item => 
-                Object.keys(obj).every(key => obj.category === item.category && item.addIncome === false)
+                Object.keys(obj).every(key => obj.category === item.category && item.addIncome === false && item.savingMoney === false)
             )
         );
     };
@@ -62,10 +69,17 @@ const Statistic = (props) => {
         getData();
     }, []);
 
+    useEffect(() => {
+        getData();
+        console.log('reset')
+    }, [resetFilters]);
+
+
+    // console.log(selectedDate);
 
     return (
       <>
-          <View style={styled.chartContainer}> 
+       {dataMoney.length > 0 ?  <View style={styled.chartContainer}> 
             <View>
                 <Text style={styled.statisticTitle}>Income</Text>
                 <PieGraph
@@ -82,8 +96,32 @@ const Statistic = (props) => {
                     height={200}
                 />
            </View>
+        </View> 
+        : 
+        <View style={styled.listEmpty}>
+            <Text style={styled.listEmptyTitle}> You dont have any statistic...</Text>
         </View>
-        <View style={styled.spendListContainer}>
+        }
+        <View style={styled.filtersContainer}>
+            <TouchableOpacity
+                onPress={() => setShowDatePiker(true)}
+                style={styled.selectDateButton}
+            >
+            <Text style={styled.titleSelectedDate}>{Object.keys(selectedDate).length > 0 ? `${selectedDate.startDate} - ${selectedDate.endDate}` : 'Select date'}</Text>
+        </TouchableOpacity> 
+        <TouchableOpacity
+            onPress={() => {
+                setResetFilter(!resetFilters);
+                setSelectedDate({});
+            }}
+            style={styled.selectDateReset}
+         >
+            <Text style={styled.titleRest}>Reset</Text>
+        </TouchableOpacity> 
+        </View>
+            {dataMoney.length > 0 ? (
+            <>
+            <View style={styled.spendListContainer}>
             <View style={styled.statisticIncomeContainer}>
                 {incomeObject(dataMoney)?.map(item => (
                     <View style={{
@@ -114,7 +152,22 @@ const Statistic = (props) => {
                     </View>
                 ))}
             </View>
-        </View>
+             </View>
+            </>
+            ) :
+            (
+                 <View style={styled.listEmpty}>
+                     <Text style={styled.listEmptyTitle}> You dont have any statistic...</Text>
+                </View>
+
+            )
+        }
+        <DatePickerComponent
+          showDatePiker={showDatePiker}
+          setShowDatePiker={setShowDatePiker}
+          setSelectedDate={setSelectedDate}
+          applyDateFilters={applyDateFilters}
+        />
       </>
     );
 }
@@ -128,6 +181,18 @@ const styled = StyleSheet.create({
         fontSize: 18,
         textAlign: "center",
         fontWeight: "bold"
+    },
+    listEmpty:{
+        marginHorizontal: 10,
+        marginVertical: 30,
+        padding: 30,
+        backgroundColor: colors.one.ligthBlue,
+        borderRadius: 20
+    },
+    listEmptyTitle:{
+        textAlign: 'center',
+        fontSize: 17,
+        color: colors.one.ligthWhite
     },
     emptyTitle: {
         textAlign: "center",
@@ -170,6 +235,29 @@ const styled = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginVertical: 5
+    },
+    selectDateButton: {
+        backgroundColor: colors.one.ligthBlue,
+        borderRadius: 10,
+        width: '70%',
+        padding: 7,
+        alignItems: 'center', 
+    },
+    selectDateReset: {
+         width: '30%',
+        padding: 7,
+        alignItems: 'center', 
+    },
+    titleSelectedDate: {
+        color: 'white',
+        fontSize: 14
+    },
+    filtersContainer:{
+        flexDirection: 'row',
+        marginHorizontal: 25
+    },
+    titleRest: {
+        color: 'green'
     }
 });
 

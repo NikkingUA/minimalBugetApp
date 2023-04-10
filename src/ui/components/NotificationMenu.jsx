@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View , StyleSheet, Alert} from 'react-native';
+import { Text, View, StyleSheet, Alert } from 'react-native';
 import { CustomIcon } from '../atoms';
 
 
 const NotificationMenu = (props) => {
-    return(
+    return (
         <View style={styled.barContainer}>
             {/* <CustomIcon
                 type="notifications-circle-outline"
@@ -24,8 +24,8 @@ const styled = StyleSheet.create({
         paddingTop: 5,
         paddingRight: 15,
         flexDirection: 'row',
-        justifyContent: 'flex-end', 
-        marginBottom: 5,
+        justifyContent: 'flex-end',
+        marginBottom: 10,
         marginTop: 30
     }
 })

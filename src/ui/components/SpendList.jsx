@@ -10,59 +10,43 @@ import {
 } from 'react-native';
 import { colors } from '../../theme/color/color';
 
-
-const Item = ({ data }) => {
-
-    const controlStyleOfListMoney = () => {
-        if(data?.savingMoney){
+const SpendList = ({
+    dataMoney
+}) => {
+    const controlStyleOfListMoney = (data) => {
+        if (data?.savingMoney) {
             return styled.savingMoney;
-        }else if(!data?.savingMoney && data.addIncome){
-            return styled.savingMoney;
-        }else if(data.addIncome){
+        } else if (data.addIncome) {
             return styled.addMoney;
-        }else if(!data.addIncome) {
+        } else if (!data.addIncome) {
             return styled.spendMoney;
         }
     };
 
     return (
-    <View style={data.addIncome ? styled.itemListAdd : styled.itemListSpend} key={data.id}>
-        <View style={styled.description}>
-            <Text style={styled.titleOfItem}>{data.title}</Text>
-            <Text style={styled.category}>Category: {data.category}</Text>
-            <Text style={styled.paymentMethod}>Payment method: {data.methodOfPayments}</Text>
-        </View>
-        <View style={styled.summary}>
-            <Text style={styled.date}>{data?.creationDate}</Text>
-            <Text style={controlStyleOfListMoney()}>
-                {data.addIncome || !data.savingMoney ? '+' : !data.addIncome || data.savingMoney ? '-' : ''}
-                {data.spendMoney}
-                {data.valute}
-            </Text>
-        </View>
-    </View>
-);
-}
-
-const renderItem = ({ item }) => (
-    <Item data={item} />
-);
-
-const SpendList = ({
-    dataMoney
-}) => {
-    return (
         <View>
             <View style={styled.scrollContainer}>
-                {dataMoney.length > 0 ? (
-                    <FlatList
-                        data={dataMoney}
-                        renderItem={renderItem}
-                        keyExtractor={item => item.id}
-                    />
-                )
+                {dataMoney?.length > 0 ? dataMoney?.map(data => (
+                    <View style={data.addIncome ? styled.itemListAdd : styled.itemListSpend} key={data.id}>
+                        <View style={styled.description}>
+                            <Text style={styled.titleOfItem}>{data.title}</Text>
+                            <Text style={styled.category}>Category: {data.category}</Text>
+                            <Text style={styled.paymentMethod}>Payment method: {data.methodOfPayments}</Text>
+                        </View>
+                        <View style={styled.summary}>
+                            <Text style={styled.date}>{data?.creationDate}</Text>
+                            <Text style={controlStyleOfListMoney(data)}>
+                                {data.addIncome ? '+' : !data.addIncome ? '-' : ''}
+                                {data.spendMoney}
+                                {data.valute}
+                            </Text>
+                        </View>
+                    </View>
+                ))
                     :
-                    <Text style={styled.emptyListMessage}>Your list is empty...</Text>
+                    (
+                        <Text style={styled.emptyListMessage}>Your list is empty...</Text>
+                    )
                 }
             </View>
         </View>

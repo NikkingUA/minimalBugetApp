@@ -29,10 +29,13 @@ const BottomMenu = (props) => {
                     >
                         <CustomIcon
                             type="wallet-outline"
-                            size={23}
+                            size={25}
                             color={'white'}
                             onAction={() => {
-                                navigation.navigate('Wallet')
+                                navigation.reset({
+                                    index: 0,
+                                    routes: [{name: 'Wallet'}]
+                                });
                                 setActive({
                                     iconWallet: true,
                                     iconNote: false,
@@ -51,7 +54,7 @@ const BottomMenu = (props) => {
                     >
                         <CustomIcon
                             type="cash-outline"
-                            size={23}
+                            size={25}
                             color={'white'}
                             onAction={() => {
                                 navigation.navigate('SavingsMoney');
@@ -72,7 +75,7 @@ const BottomMenu = (props) => {
                     >
                         <CustomIcon
                             type="bar-chart-outline"
-                            size={23}
+                            size={25}
                             color={'white'}
                             onAction={() => {
                                 navigation.navigate('Statistic');
@@ -94,7 +97,7 @@ const BottomMenu = (props) => {
                     >
                         <CustomIcon
                             type="person-outline"
-                            size={23}
+                            size={25}
                             color={'white'}
                             onAction={() => {
                                 navigation.navigate('Profile');

@@ -11,13 +11,14 @@ const CustomInput = ({
     onChange, 
     error, 
     errorEnabled,
-    maxLength
+    maxLength,
+    backgroundColor = colors.one.ligthBlueInput
 }) => {
 
     return (
         <View>
             <TextInput
-                style={styled.input}
+                style={[styled.input, {backgroundColor: backgroundColor}]}
                 placeholder={placeholder}
                 keyboardType={type}
                 onChangeText={(value) => onChange(value)}

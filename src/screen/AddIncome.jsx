@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, Keyboard, Platform } from 'react-native';
 
 import { colors } from '../theme/color/color';
 import {
@@ -22,9 +22,14 @@ const AddIncome = (props) => {
 
     const navigation = useNavigation();
 
-    const [addIncome, setAddIncome] = useState({});
+    const [addIncome, setAddIncome] = useState({
+        money: '',
+        title: '',
+        description: '',
+        paymentMethod: '',
+        category: ''
+    });
     const [moneyList, setMoneyList] = useState([]);
-    const [enable, setEnable] = useState(false);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
 
     const getData = async () => {
@@ -35,6 +40,14 @@ const AddIncome = (props) => {
             console.log('Get data wallet error: ', e);
         }
     };
+
+    const isDisabled = () =>
+        addIncome.money === '' ||
+        addIncome.title === '' ||
+        addIncome.paymentMethod === '' ||
+        addIncome.category === '';
+
+    console.log(isDisabled());
 
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -88,17 +101,9 @@ const AddIncome = (props) => {
             });
         }
         navigation.replace('Wallet');
-    }
+    };
 
-    useEffect(() => {
-        if (addIncome.money && addIncome.title && addIncome.paymentMethod) {
-            if (addIncome.money !== '' || addIncome.title !== '') {
-                setEnable(true)
-            }
-        } else {
-            setEnable(false)
-        }
-    }, [addIncome.money, addIncome.title]);
+
 
     return (
         <KeyboardAwareScrollView style={styled.container}>
@@ -114,11 +119,21 @@ const AddIncome = (props) => {
                             money: value
                         })}
                         maxLength={5}
+                        backgroundColor={addIncome?.money.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput}
                     />
                 </View>
                 <View style={styled.selectContainer}>
                     <SelectDropdown
-                        buttonStyle={styled.input}
+                        buttonStyle={{
+                            backgroundColor: addIncome?.paymentMethod.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput,
+                            height: 60,
+                            width: '85%',
+                            marginRight: 20,
+                            marginVertical: 10,
+                            padding: 10,
+                            borderRadius: 20,
+                            zIndex: 1000
+                        }}
                         rowTextStyle={styled.dropDown}
                         selectedRowStyle={styled.dropDown}
                         defaultButtonText={'Payment method'}
@@ -128,8 +143,9 @@ const AddIncome = (props) => {
                         renderDropdownIcon={isOpened => {
                             return <CustomIcon
                                 type={isOpened ? 'chevron-up' : 'chevron-down'}
-                                size={25}
+                                size={15}
                                 color="black"
+                                zIndex={0}
                             />
                         }}
                         onSelect={(selectedItem, index) => {
@@ -146,7 +162,16 @@ const AddIncome = (props) => {
                         }}
                     />
                     <SelectDropdown
-                        buttonStyle={styled.input}
+                        buttonStyle={{
+                            backgroundColor: addIncome?.category.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput,
+                            height: 60,
+                            width: '85%',
+                            marginRight: 20,
+                            marginVertical: 10,
+                            padding: 10,
+                            borderRadius: 20,
+                            zIndex: 1000
+                        }}
                         rowTextStyle={styled.dropDown}
                         selectedRowStyle={styled.dropDown}
                         buttonTextStyle={styled.buttonTextDropDown}
@@ -156,8 +181,9 @@ const AddIncome = (props) => {
                         renderDropdownIcon={isOpened => {
                             return <CustomIcon
                                 type={isOpened ? 'chevron-up' : 'chevron-down'}
-                                size={25}
+                                size={15}
                                 color="black"
+                                zIndex={0}
                             />
                         }}
                         onSelect={(selectedItem, index) => {
@@ -182,6 +208,7 @@ const AddIncome = (props) => {
                             ...addIncome,
                             title: value
                         })}
+                        backgroundColor={addIncome?.title.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput}
                     />
                 </View>
                 <View>
@@ -192,23 +219,33 @@ const AddIncome = (props) => {
                             ...addIncome,
                             description: value
                         })}
+                         backgroundColor={addIncome?.description.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput}
                     />
                 </View>
             </View>
             <View>
-                {!keyboardVisible ? (
-                    <CustomButton
-                    label="ADD"
-                    action={() => handleAddIncome()}
-                    enable={enable}
-                />
-                ) : (
-                    <CustomButton
-                    label="Close keyboard"
-                    action={() => keyboardDidHideListener}
-                    enable={true}
-                />
-                )}
+                {
+                    Platform.OS === 'ios' ?
+                        <CustomButton
+                        label="ADD"
+                        action={() => handleAddIncome()}
+                        enable={!isDisabled()}
+                            />
+                        : 
+                        !keyboardVisible ? (
+                        <CustomButton
+                            label="ADD"
+                            action={() => handleAddIncome()}
+                            enable={!isDisabled()}
+                    />
+                    ) : (
+                        <CustomButton
+                            label="Close keyboard"
+                            action={() => keyboardDidHideListener}
+                            enable={true}
+                        />
+                    )
+                }
             </View>
             </View>
         </KeyboardAwareScrollView>
@@ -230,14 +267,16 @@ const styled = StyleSheet.create({
         borderRadius: 20
     },
     buttonTextDropDown: {
-        fontSize: 14,
+        fontSize: 13,
         textAling: 'left'
     },
     dropDown: {
-        textAlign: 'left'
+        textAlign: 'left',
+        // color: 'white'
     },
     dropDownContainer: {
-        borderRadius: 10
+        borderRadius: 10,
+        // backgroundColor: colors.one.ligthBlueOne
     },
     selectContainer: {
         flexDirection: 'row',

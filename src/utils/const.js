@@ -33,6 +33,12 @@ export const categoryExpense = [
     "Bicycle"
 ];
 
+export const chooseColorOfSavingMoney = [
+    "red",
+    "green",
+    "blue",
+    "rosa"
+];
 
 export const colorArray = [
     'rgb(29 ,131 ,255)',
@@ -44,4 +50,25 @@ export const colorArray = [
     'rgb(98,0,255)',
     'rgb(98,0,6)',
     'rgb(189,0,6)'
+];
+
+export const valute = [
+    '$',
+    '€'
+];
+
+export const language = [
+    'it',
+    'en',
+    'fr',
+    'sp',
+    'ru',
+    'ua'
+];
+
+export const colorOfApp = [
+    'Blue',
+    'Green',
+    'Red',
+    'Rosa'
 ];

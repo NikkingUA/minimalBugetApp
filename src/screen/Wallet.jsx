@@ -12,14 +12,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import moment from 'moment';
 
+import { useTranslation } from 'react-i18next';
+
 
 const Wallet = (props) => {
 
     const [dataMoney, setDataMoney] = useState([]);
+    const [update, setUpdate] = useState(false);
+    const { t } = useTranslation();
 
     const getData = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem('@moneyData');
+            setUpdate(true);
             return jsonValue != null ? setDataMoney(JSON.parse(jsonValue)) : null;
         } catch (e) {
             console.log('Get data wallet error: ', e);
@@ -28,24 +33,24 @@ const Wallet = (props) => {
 
     useEffect(() => {
         getData();
-    }, []);
+    }, [update]);
 
     return (
         <View style={styled.principalContainer}>
-        <View style={styled.saldoContainer}>
+            <View style={styled.saldoContainer}>
                 <View>
                     <Text style={styled.dataText}>Today: {moment().format('MMMM Do YYYY, hh:mm')}</Text>
                 </View>
                 <View>
                     <Text>
-                        <Text style={styled.saldoText}>Balance: </Text>
-                        <Text style={ calcTotal(dataMoney) > 0 ? styled.numberMoney : styled.numberMoneyLessThan}>{`${calcTotal(dataMoney)}$`}</Text>
+                        <Text style={styled.saldoText}>{t('balance')}: </Text>
+                        <Text style={calcTotal(dataMoney) > 0 ? styled.numberMoney : styled.numberMoneyLessThan}>{`${calcTotal(dataMoney)}$`}</Text>
                     </Text>
                 </View>
                 <IconMenu />
-        </View>
+            </View>
             <ScrollView style={styled.itemContainer}>
-                <SpendList dataMoney={dataMoney} />
+                <SpendList dataMoney={dataMoney.reverse()} />
             </ScrollView>
             <Toast />
         </View>

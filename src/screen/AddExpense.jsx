@@ -3,7 +3,8 @@ import {
     View, 
     StyleSheet, 
     Text,
-    Keyboard
+    Keyboard,
+    Platform
 } from 'react-native';
 import { colors } from '../theme/color/color';
 import {
@@ -27,9 +28,14 @@ const AddExpense = (props) => {
 
     const navigation = useNavigation();
 
-    const [addExpense, setAddExpense] = useState({});
+    const [addExpense, setAddExpense] = useState({
+        money: '',
+        title: '',
+        description: '',
+        paymentMethod: '',
+        category: ''
+    });
     const [moneyList, setMoneyList] = useState([]);
-    const [enable, setEnable] = useState(false);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
 
     const getData = async () => {
@@ -41,6 +47,12 @@ const AddExpense = (props) => {
             console.log('Get data wallet error: ', e);
         }
     };
+
+    const isDisabled = () =>
+        addExpense.money === '' ||
+        addExpense.title === '' ||
+        addExpense.paymentMethod === '' ||
+        addExpense.category === '';
 
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -97,16 +109,6 @@ const AddExpense = (props) => {
         navigation.replace('Wallet');
     }
 
-    useEffect(() => {
-        if (addExpense.money && addExpense.title && addExpense.paymentMethod) {
-            if (addExpense.money !== '' || addExpense.title !== '') {
-                setEnable(true)
-            }
-        } else {
-            setEnable(false)
-        }
-    }, [addExpense.money, addExpense.title]);
-
     return (
         <KeyboardAwareScrollView style={styled.container}>
             <Text style={styled.titleAdd}>Add Expense</Text>
@@ -119,11 +121,20 @@ const AddExpense = (props) => {
                             ...addExpense,
                             money: value
                         })}
+                        backgroundColor={addExpense?.money.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput}
                     />
                 </View>
                 <View style={styled.selectContainer}>
                     <SelectDropdown
-                        buttonStyle={styled.input}
+                        buttonStyle={{
+                            backgroundColor: addExpense?.paymentMethod.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput,
+                            height: 60,
+                            width: '80%',
+                            marginHorizontal: 20,
+                            marginVertical: 10,
+                            padding: 10,
+                            borderRadius: 20
+                        }}
                         rowTextStyle={styled.dropDown}
                         selectedRowStyle={styled.dropDown}
                         defaultButtonText={'Payment method'}
@@ -151,7 +162,15 @@ const AddExpense = (props) => {
                         }}
                     />
                     <SelectDropdown
-                        buttonStyle={styled.input}
+                        buttonStyle={{
+                            backgroundColor: addExpense?.category.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput,
+                            height: 60,
+                            width: '80%',
+                            marginHorizontal: 20,
+                            marginVertical: 10,
+                            padding: 10,
+                            borderRadius: 20
+                        }}
                         rowTextStyle={styled.dropDown}
                         selectedRowStyle={styled.dropDown}
                         buttonTextStyle={styled.buttonTextDropDown}
@@ -187,6 +206,7 @@ const AddExpense = (props) => {
                             ...addExpense,
                             title: value
                         })}
+                        backgroundColor={addExpense?.title.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput}
                     />
                 </View>
                 <View>
@@ -197,23 +217,34 @@ const AddExpense = (props) => {
                             ...addExpense,
                             description: value
                         })}
+                        backgroundColor={addExpense?.description.length > 0 ? colors.one.ligthGreen : colors.one.ligthBlueInput}
                     />
                 </View>
             </View>
             <View>
-                 {!keyboardVisible ? (
-                    <CustomButton
-                    label="ADD"
-                    action={() => handleAddExpense()}
-                    enable={enable}
-                />
-                ) : (
-                    <CustomButton
-                    label="Close keyboard"
-                    action={() => keyboardDidHideListener}
-                    enable={true}
-                />
-                )}
+                {
+                    Platform.OS === 'ios' ?
+                        <CustomButton
+                        label="ADD"
+                        action={() => handleAddExpense()}
+                        enable={!isDisabled()}
+                            />
+                        : 
+                        !keyboardVisible ? (
+                        <CustomButton
+                            label="ADD"
+                            action={() => handleAddExpense()}
+                            enable={!isDisabled()}
+                    />
+                    ) : (
+                        <CustomButton
+                            label="Close keyboard"
+                            action={() => keyboardDidHideListener}
+                            enable={true}
+                        />
+                    )
+                }
+                 
             </View>
         </KeyboardAwareScrollView>
     )
@@ -221,8 +252,6 @@ const AddExpense = (props) => {
 
 const styled = StyleSheet.create({
     container: {
-        // margin: 5,
-        // justifyContent: 'space-between'
     },
     input: {
         backgroundColor: colors.one.ligthBlueInput,
@@ -234,14 +263,16 @@ const styled = StyleSheet.create({
         borderRadius: 20
     },
     buttonTextDropDown: {
-        fontSize: 14,
+        fontSize: 10,
         textAling: 'left'
     },
     dropDown: {
-        textAlign: 'left'
+        textAlign: 'left',
+        // color: 'white'
     },
     dropDownContainer: {
-        borderRadius: 10
+        borderRadius: 10,
+        // backgroundColor: colors.one.ligthBlueOne
     },
     selectContainer: {
         flexDirection: 'row',

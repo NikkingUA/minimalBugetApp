@@ -6,10 +6,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const CustomIcon = (props) => {
 
-    const { type, size, color, onAction } = props;
+    const { type, size, color, onAction,  zIndex = 10 } = props;
 
     return (
-        <View>
+        <View style={{zIndex: zIndex}}>
             <Icon
                 onPress={() => onAction && onAction()}
                 name={type}

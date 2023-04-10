@@ -25,7 +25,8 @@ export default CustomButton;
 const styled = StyleSheet.create({
     buttonContainer: {
         backgroundColor: colors.one.ligthGreenButton,
-        margin: 20,
+        marginHorizontal: 20,
+        marginVertical: 5,
         padding: 20,
         borderRadius: 25
     },

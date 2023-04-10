@@ -4,7 +4,12 @@ import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { colors } from '../../theme/color/color';
 
 const CustomTextArea = (props) => {
-    const { type, placeholder, onChange } = props;
+    const { 
+        type,
+        placeholder,
+        onChange,
+        backgroundColor
+    } = props;
     return (
         <View style={styled.inputContainer}>
             <TextInput
@@ -13,7 +18,7 @@ const CustomTextArea = (props) => {
                 multiline={true}
                 numberOfLines={12}
                 onChangeText={(value) => onChange(value)}
-                style={styled.textArea}
+                style={[styled.textArea, {backgroundColor: backgroundColor}]}
             />
         </View>
     );
@@ -30,7 +35,8 @@ const styled = StyleSheet.create({
         marginVertical: 10,
         padding: 10,
         borderRadius: 20,
-        textAlignVertical: 'top'
+        textAlignVertical: 'top', 
+        height: 220
     }
 })
 

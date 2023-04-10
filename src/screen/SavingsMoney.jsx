@@ -12,11 +12,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const SavingsMoney = (props) => {
     const [savingMoney, setSavingMoney] = useState([]);
     const [dataMoney, setDataMoney] = useState([]);
+    const [update, setUpdate] = useState(false);
     const navigation = useNavigation();
 
     const getDataSavingMoney = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem('@savingDataMoney');
+            setUpdate(true);
             return jsonValue != null ? setSavingMoney(JSON.parse(jsonValue)) : null;
         } catch (e) {
             console.log('Get data saving money error: ', e);
@@ -33,6 +35,7 @@ const SavingsMoney = (props) => {
     };
 
     function calculatePercentageOfMaxAmount(currentAmount, maxAmount) {
+        if(currentAmount > maxAmount) return 100;
         return (currentAmount / maxAmount) * 100;
     };
 
@@ -40,15 +43,18 @@ const SavingsMoney = (props) => {
         // setData();
         getDataSavingMoney();
         getDataAllMoney();
-    }, []);
+    }, [update]);
+
+    console.log('saving money', savingMoney);
 
     return (
         <>
-            <Text>Saving money</Text>
             <ScrollView style={styled.container}>
-                <View style={styled.itemContainer}>
+               {savingMoney.length > 0  ? (
+                 <View style={styled.itemContainer}>
                     {savingMoney?.map((item, index, arr) => (
                         <TouchableOpacity 
+                            key={index}
                             style={styled.itemStyle}
                             onPress={() => navigation.navigate("InfoSavingsMoney", {
                                 id: item.id,
@@ -61,13 +67,27 @@ const SavingsMoney = (props) => {
                             })}
                         >
                             <Text style={styled.titleSaveMoney}>{item.label}</Text>
-                            <Text style={styled.percentedAmount}>{Math.floor(calculatePercentageOfMaxAmount(item.actualValue, item.limit))}%</Text>
+                            <Text style={styled.percentedAmount}>
+                                {Math.floor(calculatePercentageOfMaxAmount(item.actualValue, item.limit))}%
+                            </Text>
                             <View style={styled.moneyContainer}>
-                                 <Text style={styled.actualValue}>{item.actualValue}$</Text>
+                                 <Text style={styled.actualValue}>
+                                    {item.actualValue}$
+                                </Text>
+                                {item.actualValue > item.limit && <View style={{marginLeft: 5, width: 10, height: 10, borderRadius: 100, backgroundColor: 'green'}}/>}
                             </View>
+                            
                         </TouchableOpacity>
                     ))}
                 </View>
+               ) :
+               (
+                <View style={styled.listEmpty}>
+                    <Text style={styled.listEmptyTitle}>Your saving money list is empty...</Text>
+                </View>
+               )
+
+               }
                <View
                 style={styled.buttonAddContainer}
                 >
@@ -79,6 +99,7 @@ const SavingsMoney = (props) => {
                             type="add"
                             color="white"
                             size={45}
+                            onAction={() => navigation.navigate('AddSaveMoney')}
                         />
                     </TouchableOpacity>
                </View>
@@ -92,8 +113,21 @@ const styled = StyleSheet.create({
         padding: 10,
         flex: 1
     },
+    listEmpty:{
+        marginHorizontal: 10,
+        marginVertical: 30,
+        padding: 30,
+        backgroundColor: colors.one.ligthBlue,
+        borderRadius: 20
+    },
+    listEmptyTitle:{
+        textAlign: 'center',
+        fontSize: 17,
+        color: colors.one.ligthWhite
+    },
     moneyContainer:{
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     percentedAmount:{
         fontSize: 45,
@@ -115,7 +149,7 @@ const styled = StyleSheet.create({
         flexWrap: 'wrap'
     },
     itemStyle: {
-        backgroundColor: colors.one.ligthBlueTrasparent,
+        backgroundColor: colors.one.ligthBlue,
         width: 170,
         height: 170,
         borderRadius: 40,
